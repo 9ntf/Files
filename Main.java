@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.zip.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -71,6 +72,49 @@ public class Main {
             bufferedWriter.write(log.toString());
             bufferedWriter.flush();
         } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+
+        //Задача 2.
+        //Создаем экземпляры класса
+        GameProgress gameProgress1 = new GameProgress(180, 80, 3, 345.23);
+        GameProgress gameProgress2 = new GameProgress(230, 110, 7, 524.65);
+        GameProgress gameProgress3 = new GameProgress(65, 5, 1, 1400.99);
+
+        //Делаем 3 сохранения
+        saveGame("D:\\Netology\\Games\\savegames\\save1.dat", gameProgress1);
+        saveGame("D:\\Netology\\Games\\savegames\\save2.dat", gameProgress2);
+        saveGame("D:\\Netology\\Games\\savegames\\save3.dat", gameProgress3);
+
+        //Архивируем сохранения
+        zipFiles("D:\\Netology\\Games\\savegames\\saves.zip", saveGamesDir.listFiles());
+    }
+
+    //Метод сохранения игрового процесса(Сериализация)
+    public static void saveGame(String filePath, GameProgress gameProgress) {
+        try (FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
+            objectOutputStream.writeObject(gameProgress);
+        } catch (Exception ex) {
+            System.out.println("Не удалось сохранить файл");
+        }
+    }
+
+    //Метод архивирующий файлы
+    public static void zipFiles(String zipPath, File[] filePath) {
+        try (ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(zipPath))) {
+            for (File file : filePath) {
+                ZipEntry entry = new ZipEntry(file.getName());
+                zipOutputStream.putNextEntry(entry);
+                FileInputStream fileInputStream = new FileInputStream(file);
+                byte[] buffer = new byte[fileInputStream.available()];
+                fileInputStream.read(buffer);
+                zipOutputStream.write(buffer);
+                zipOutputStream.closeEntry();
+                fileInputStream.close();
+                file.delete();
+            }
+        } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
     }
