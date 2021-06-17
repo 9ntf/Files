@@ -86,8 +86,18 @@ public class Main {
         saveGame("D:\\Netology\\Games\\savegames\\save2.dat", gameProgress2);
         saveGame("D:\\Netology\\Games\\savegames\\save3.dat", gameProgress3);
 
-        //Архивируем сохранения
+       //Архивируем сохранения
         zipFiles("D:\\Netology\\Games\\savegames\\saves.zip", saveGamesDir.listFiles());
+
+        //Задача 3.
+        //Разархивируем сохранения
+        openZip("D:\\Netology\\Games\\savegames\\saves.zip", saveGamesDir.getPath());
+
+        //Выведем в консоль десериализацию
+        System.out.println(openProgress("D:\\Netology\\Games\\savegames\\save1.dat"));
+        System.out.println(openProgress("D:\\Netology\\Games\\savegames\\save2.dat"));
+        System.out.println(openProgress("D:\\Netology\\Games\\savegames\\save3.dat"));
+
     }
 
     //Метод сохранения игрового процесса(Сериализация)
@@ -117,5 +127,38 @@ public class Main {
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
+    }
+
+    //Метод разархивирующий файлы
+    public static void openZip(String zipPath, String savesPath) {
+        try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(zipPath))) {
+            ZipEntry entry;
+            String name;
+            while ((entry = zipInputStream.getNextEntry()) != null) {
+                name = entry.getName();
+                File file = new File(savesPath, name);
+                FileOutputStream fileOutputStream = new FileOutputStream(file);
+                for (int c = zipInputStream.read(); c != -1; c = zipInputStream.read()) {
+                    fileOutputStream.write(c);
+                }
+                fileOutputStream.flush();
+                zipInputStream.closeEntry();
+                fileOutputStream.close();
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    //Метод загрузки игрового процесса(Десериализация)
+    public static GameProgress openProgress(String filePath) {
+        GameProgress gameProgress = null;
+        try (FileInputStream fileInputStream = new FileInputStream(filePath);
+             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
+            gameProgress = (GameProgress) objectInputStream.readObject();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        return gameProgress;
     }
 }
