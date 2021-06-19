@@ -2,78 +2,49 @@ import java.io.*;
 import java.util.zip.*;
 
 public class Main {
-    public static void main(String[] args) {
-        StringBuilder log = new StringBuilder();
+    static StringBuilder log = new StringBuilder();
 
-        File srcDir = new File("D:\\Netology\\Games\\src");
-        File resDir = new File("D:\\Netology\\Games\\res");
-        File saveGamesDir = new File("D:\\Netology\\Games\\savegames");
-        File tempDir = new File("D:\\Netology\\Games\\temp");
-        File mainDir = new File("D:\\Netology\\Games\\src\\main");
-        File testDir = new File("D:\\Netology\\Games\\src\\test");
-        File mainFileJava = new File("D:\\Netology\\Games\\src\\main\\Main.java");
-        File utilsFileJava = new File("D:\\Netology\\Games\\src\\main\\Utils.java");
-        File drawablesDir = new File("D:\\Netology\\Games\\res\\drawables");
-        File vectorsDir = new File("D:\\Netology\\Games\\res\\vectors");
-        File iconsDir = new File("D:\\Netology\\Games\\res\\icons");
-        File tempFile = new File("D:\\Netology\\Games\\temp\\temp.txt");
+    public static void main(String[] args) {
+
+        File srcDir = new File("D:" + File.separator + "Netology" + File.separator + "Games" + File.separator + "src");
+        File resDir = new File("D:" + File.separator + "Netology" + File.separator + "Games" + File.separator + "res");
+        File saveGamesDir = new File("D:" + File.separator + "Netology" + File.separator + "Games" + File.separator + "savegames");
+        File tempDir = new File("D:" + File.separator + "Netology" + File.separator + "Games" + File.separator + "temp");
+        File mainDir = new File("D:" + File.separator + "Netology" + File.separator + "Games" + File.separator + "src" + File.separator + "main");
+        File testDir = new File("D:" + File.separator + "Netology" + File.separator + "Games" + File.separator + "src" + File.separator + "test");
+        File mainFileJava = new File("D:" + File.separator + "Netology" + File.separator + "Games" + File.separator + "src" + File.separator + "main" + File.separator + "Main.java");
+        File utilsFileJava = new File("D:" + File.separator + "Netology" + File.separator + "Games" + File.separator + "src" + File.separator + "main" + File.separator + "Utils.java");
+        File drawablesDir = new File("D:" + File.separator + "Netology" + File.separator + "Games" + File.separator + "res" + File.separator + "drawables");
+        File vectorsDir = new File("D:" + File.separator + "Netology" + File.separator + "Games" + File.separator + "res" + File.separator + "vectors");
+        File iconsDir = new File("D:" + File.separator + "Netology" + File.separator + "Games" + File.separator + "res" + File.separator + "icons");
+        File tempFile = new File("D:" + File.separator + "Netology" + File.separator + "Games" + File.separator + "temp" + File.separator + "temp.txt");
+        String saveFile1 = "D:" + File.separator + "Netology" + File.separator + "Games" + File.separator + "savegames" + File.separator + "save1.dat";
+        String saveFile2 = "D:" + File.separator + "Netology" + File.separator + "Games" + File.separator + "savegames" + File.separator + "save2.dat";
+        String saveFile3 = "D:" + File.separator + "Netology" + File.separator + "Games" + File.separator + "savegames" + File.separator + "save3.dat";
+        String zipFile = "D:" + File.separator + "Netology" + File.separator + "Games" + File.separator + "savegames" + File.separator + "saves.zip";
 
         //Этап 1
-        if (srcDir.mkdir()) {
-            log.append("Создана дирректория: " + srcDir.getName() + ", Путь: " + srcDir.getParent() + "\n");
-        }
-        if (resDir.mkdir()) {
-            log.append("Создана дирректория: " + resDir.getName() + ", Путь: " + resDir.getParent() + "\n");
-        }
-        if (saveGamesDir.mkdir()) {
-            log.append("Создана дирректория: " + saveGamesDir.getName() + ", Путь: " + saveGamesDir.getParent() + "\n");
-        }
-        if (tempDir.mkdir()) {
-            log.append("Создана дирректория: " + tempDir.getName() + ", Путь: " + tempDir.getParent() + "\n");
-        }
+        createDir(srcDir);
+        createDir(resDir);
+        createDir(saveGamesDir);
+        createDir(tempDir);
 
         //Этап 2
-        if (mainDir.mkdir()) {
-            log.append("Создана дирректория: " + mainDir.getName() + ", Путь: " + mainDir.getParent() + "\n");
-        }
-        if (testDir.mkdir()) {
-            log.append("Создана дирректория: " + testDir.getName() + ", Путь: " + testDir.getParent() + "\n");
-        }
+        createDir(mainDir);
+        createDir(testDir);
 
         //Этап 3
-        try {
-            if (mainFileJava.createNewFile()) {
-                log.append("Создан Файл: " + mainFileJava.getName() + ", Путь: " + mainFileJava.getParent() + "\n");
-            }
-            if (utilsFileJava.createNewFile()) {
-                log.append("Создан Файл: " + utilsFileJava.getName() + ", Путь: " + utilsFileJava.getParent() + "\n");
-            }
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
+        createFile(mainFileJava);
+        createFile(utilsFileJava);
 
         //Этап 4
-        if (drawablesDir.mkdir()) {
-            log.append("Создана дирректория: " + drawablesDir.getName() + ", Путь: " + drawablesDir.getParent() + "\n");
-        }
-        if (vectorsDir.mkdir()) {
-            log.append("Создана дирректория: " + vectorsDir.getName() + ", Путь: " + vectorsDir.getParent() + "\n");
-        }
-        if (iconsDir.mkdir()) {
-            log.append("Создана дирректория: " + iconsDir.getName() + ", Путь: " + iconsDir.getParent() + "\n");
-        }
+        createDir(drawablesDir);
+        createDir(vectorsDir);
+        createDir(iconsDir);
 
         //Этап 5
-        try {
-            if (tempFile.createNewFile()) {
-                log.append("Создан Файл: " + tempFile.getName() + ", Путь: " + tempFile.getParent() + "\n");
-            }
-            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(tempFile));
-            bufferedWriter.write(log.toString());
-            bufferedWriter.flush();
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
+        createFile(tempFile);
+        createLog(tempFile);
 
         //Задача 2.
         //Создаем экземпляры класса
@@ -82,22 +53,58 @@ public class Main {
         GameProgress gameProgress3 = new GameProgress(65, 5, 1, 1400.99);
 
         //Делаем 3 сохранения
-        saveGame("D:\\Netology\\Games\\savegames\\save1.dat", gameProgress1);
-        saveGame("D:\\Netology\\Games\\savegames\\save2.dat", gameProgress2);
-        saveGame("D:\\Netology\\Games\\savegames\\save3.dat", gameProgress3);
+        saveGame(saveFile1, gameProgress1);
+        saveGame(saveFile2, gameProgress2);
+        saveGame(saveFile3, gameProgress3);
 
-       //Архивируем сохранения
-        zipFiles("D:\\Netology\\Games\\savegames\\saves.zip", saveGamesDir.listFiles());
+        //Архивируем сохранения
+        zipFiles(zipFile, saveGamesDir.listFiles());
 
         //Задача 3.
         //Разархивируем сохранения
-        openZip("D:\\Netology\\Games\\savegames\\saves.zip", saveGamesDir.getPath());
+        openZip(zipFile, saveGamesDir.getPath());
 
         //Выведем в консоль десериализацию
-        System.out.println(openProgress("D:\\Netology\\Games\\savegames\\save1.dat"));
-        System.out.println(openProgress("D:\\Netology\\Games\\savegames\\save2.dat"));
-        System.out.println(openProgress("D:\\Netology\\Games\\savegames\\save3.dat"));
+        System.out.println(openProgress(saveFile1));
+        System.out.println(openProgress(saveFile2));
+        System.out.println(openProgress(saveFile3));
 
+    }
+
+    //Метод создания директорий
+    private static void createDir(File file) {
+        if (file.mkdir()) {
+            log.append("Создана дирректория: " + file.getName() + ", Путь: " + file.getParent() + "\n");
+        } else if (file.exists()) {
+            log.append("Дирректория уже создана " + file.getName() + ", Путь: " + file.getParent() + "\n");
+        } else {
+            log.append("Не удалось создать дирректорию: " + file.getName() + ", Путь: " + file.getParent() + "\n");
+        }
+    }
+
+    //Метод создания файлов
+    private static void createFile(File file) {
+        try {
+            if (file.createNewFile()) {
+                log.append("Создан Файл: " + file.getName() + ", Путь: " + file.getParent() + "\n");
+            } else if (file.exists()) {
+                log.append("Файл уже создан " + file.getName() + ", Путь: " + file.getParent() + "\n");
+            }
+        } catch (IOException ex) {
+            log.append("Не удалось создать файл: " + file.getName() + ", Путь: " + file.getParent() + "\n");
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    //Метод записи логов в файл
+    private static void createLog(File file) {
+        try {
+            BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file, true));
+            bufferedWriter.write(log.toString());
+            bufferedWriter.flush();
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     //Метод сохранения игрового процесса(Сериализация)
